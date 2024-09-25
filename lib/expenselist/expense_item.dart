@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../models/expense.dart';
 
 class ExpenseItem extends StatelessWidget {
@@ -18,7 +17,7 @@ class ExpenseItem extends StatelessWidget {
         child: Column(
           children: [
             Text(expense.title),
-            SizedBox(height: 4,),
+            const SizedBox(height: 4,),
             Row(
               children: [
                 Text("\u{20b9}${expense.amount.toStringAsFixed(2)}"),
