@@ -20,7 +20,7 @@ class ExpenseItem extends StatelessWidget {
             const SizedBox(height: 4,),
             Row(
               children: [
-                Text("\u{20b9}${expense.amount.toStringAsFixed(2)}"),
+                Text("\u{20b9}${expense.amount?.toStringAsFixed(2)}"),
                 const Spacer(),
                 Row(
                   children: [
