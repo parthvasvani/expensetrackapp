@@ -1,4 +1,4 @@
-import 'package:expense_tracker/main.dart';
+import 'package:expense_tracker/widgets/chart.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 import 'expenselist/expense_list.dart';
@@ -28,8 +28,7 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       isScrollControlled: true,
-      shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
-      backgroundColor: Colors.grey[300],
+      shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
       context: context,
       builder: (ctx) {
         return NewExpense(
@@ -52,8 +51,8 @@ class _ExpensesState extends State<Expenses> {
     });
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: Duration(seconds: 3),
-        content: Text("Expense Deleted..."),
+        duration: const Duration(seconds: 3),
+        content: const Text("Expense Deleted..."),
       action: SnackBarAction(
           label: "Undo",
           onPressed: () {
@@ -65,7 +64,7 @@ class _ExpensesState extends State<Expenses> {
   }
   @override
   Widget build(BuildContext context) {
-    Widget mainContent = Center(child: Text("No Expense found. Start adding something !"));
+    Widget mainContent = const Center(child: Text("No Expense found. Start adding something !"));
 
     if(_registeredExpenses.isNotEmpty){
       mainContent = ExpenseList(
@@ -76,9 +75,7 @@ class _ExpensesState extends State<Expenses> {
 
 
     return Scaffold(
-      backgroundColor: Colors.blue[300],
       appBar: AppBar(
-        backgroundColor: Colors.blue[300],
         title: const Text("Flutter Expense Tracker"),
         actions: [
           IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add))
@@ -86,9 +83,7 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
-          const Text(
-            "This Chart",
-          ),
+          Chart(expenses: _registeredExpenses),
           const SizedBox(
             height: 10,
           ),

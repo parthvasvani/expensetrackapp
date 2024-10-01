@@ -18,7 +18,7 @@ const categoryIcon = {
 class Expense {
   final String id;
   final String title;
-  final double? amount;
+  final double amount;
   final DateTime date;
   final Category category;
 
@@ -27,9 +27,35 @@ class Expense {
       required this.title,
       required this.amount,
       required this.date,
-      required this.category}) :id = uuid.v4();
+      required this.category})
+      :id = uuid.v4();
 
   String get formatDate{
     return format.format(date);
   }
 }
+
+class ExpenseBucket{
+  final Category category;
+  final List<Expense> expenses;
+
+  ExpenseBucket(this.category, this.expenses);
+
+  ExpenseBucket.forCategory(List<Expense> allExp, this.category)
+  : expenses = allExp
+  .where(
+      (expense) => expense.category == category,
+  ).toList();
+
+  double get totalExp {
+    double sum = 0;
+
+    for (var expense in expenses){
+      sum += expense.amount;
+    }
+
+    return sum;
+  }
+
+}
+

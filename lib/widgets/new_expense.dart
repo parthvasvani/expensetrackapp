@@ -32,7 +32,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   void _submitExpanseData() {
     final enteredAmount = double.tryParse(_amountController.text);
-    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 1;
 
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
@@ -43,26 +43,22 @@ class _NewExpenseState extends State<NewExpense> {
           return AlertDialog(
             title: const Text(
               "Invalid inputted Data",
-              style: TextStyle(color: Colors.white),
             ),
             content: const Text(
               "Please make sure that you entered valid title, amount, date and category",
-              style: TextStyle(color: Colors.white),
             ),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
-                  child: const Text("Okay"))
+                  child: Text("Okay",))
             ],
-            backgroundColor: Colors.red,
           );
         },
       );
+      return;
     }
-
-    // print("Data Saved Successfully....");
 
     widget.onAddExpense(
         Expense(
@@ -83,93 +79,95 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Column(
-        children: [
-          TextField(
-            maxLength: 50,
-            controller: _titleController,
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                prefixIcon: Icon(Icons.note_alt_outlined),
-                hintText: "Enter Title",
-                label: Text("Title"),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)))),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                  child: TextField(
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.currency_rupee),
-                    hintText: "Enter Amount",
-                    label: Text("Amount"),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)))),
-              )),
-              SizedBox(
-                width: 15,
-              ),
-              Row(
-                children: [
-                  Text(_selectedDate == null
-                      ? "Date not selected"
-                      : formatter.format(_selectedDate!)),
-                  IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: Icon(Icons.calendar_month))
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              DropdownButton(
-                  value: _selectedCategory,
-                  items: Category.values
-                      .map(
-                        (category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(
-                            category.name.toUpperCase(),
+    return SizedBox(
+      height: 500,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16,48,16,16),
+        child: Column(
+          children: [
+            TextField(
+              maxLength: 50,
+              controller: _titleController,
+              decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.note_alt_outlined),
+                  hintText: "Enter Title",
+                  label: Text("Title"),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)))),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: TextField(
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.currency_rupee),
+                      hintText: "Enter Amount",
+                      label: Text("Amount"),
+                      labelStyle: TextStyle(overflow: TextOverflow.ellipsis),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.all(Radius.circular(16)))),
+                )
+                ),
+                const SizedBox(
+                  width: 40,
+                ),
+                Row(
+                  children: [
+                    Text(_selectedDate == null
+                        ? "Date not selected"
+                        : formatter.format(_selectedDate!)),
+                    IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: Icon(Icons.calendar_month))
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                DropdownButton(
+                    value: _selectedCategory,
+                    items: Category.values
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category,
+                            child: Text(
+                              category.name.toUpperCase(),
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _selectedCategory = value;
-                    });
-                    print(_selectedCategory.name.toString());
-                  }),
-              Spacer(),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Cancel")),
-              ElevatedButton(
-                  onPressed: _submitExpanseData, child: Text("SaveExpenses"))
-            ],
-          )
-        ],
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        _selectedCategory = value;
+                      });
+                      print(_selectedCategory.name.toString());
+                    }),
+                Spacer(),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Cancel")),
+                ElevatedButton(
+                    onPressed: _submitExpanseData, child: Text("SaveExpenses"))
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
