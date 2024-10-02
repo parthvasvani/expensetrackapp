@@ -13,16 +13,16 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpenses = [
-    Expense(
-        title: "Flutter Course",
-        amount: 1999.99,
-        date: DateTime.now(),
-        category: Category.work),
-    Expense(
-        title: "Cinema",
-        amount: 499.94,
-        date: DateTime.now(),
-        category: Category.leisure),
+    // Expense(
+    //     title: "Flutter Course",
+    //     amount: 1999.99,
+    //     date: DateTime.now(),
+    //     category: Category.work),
+    // Expense(
+    //     title: "Cinema",
+    //     amount: 499.94,
+    //     date: DateTime.now(),
+    //     category: Category.leisure),
   ];
 
   void _openAddExpenseOverlay() {
@@ -64,6 +64,9 @@ class _ExpensesState extends State<Expenses> {
   }
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    print(width);
+
     Widget mainContent = const Center(child: Text("No Expense found. Start adding something !"));
 
     if(_registeredExpenses.isNotEmpty){
@@ -81,11 +84,19 @@ class _ExpensesState extends State<Expenses> {
           IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add))
         ],
       ),
-      body: Column(
+      body: width < 600
+        ? Column(
         children: [
           Chart(expenses: _registeredExpenses),
           const SizedBox(
             height: 10,
+          ),
+          Expanded(child: mainContent),
+        ],
+      )
+          : Row(
+        children: [
+          Expanded(child: Chart(expenses: _registeredExpenses),
           ),
           Expanded(child: mainContent),
         ],
